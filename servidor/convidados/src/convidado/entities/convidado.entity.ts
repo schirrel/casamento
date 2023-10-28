@@ -6,7 +6,8 @@ export class Convidado {
   nome: string;
   telefone?: string;
   email?: string;
-  amais?: number;
+  principal?: number;
+  familiares?: Convidado[];
 
   constructor(dto: CreateConvidadoDto, id: number) {
     this.id = id;

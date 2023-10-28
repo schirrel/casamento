@@ -19,8 +19,8 @@ export class CreateConvidadoDto {
   readonly email?: string;
   @ApiProperty({
     type: String,
-    description: 'Pessoas a mais',
+    description: 'ID do convidado principal caso convidado seja acompanhante',
     required: false,
   })
-  readonly amais: number = 0;
+  readonly principal: number;
 }

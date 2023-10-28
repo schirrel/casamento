@@ -10,7 +10,11 @@ import {
 import { ConvidadoService } from './convidado.service';
 import { CreateConvidadoDto } from './dto/create-convidado.dto';
 import { UpdateConvidadoDto } from './dto/update-convidado.dto';
-import { ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
 
 @Controller('convidado')
 export class ConvidadoController {

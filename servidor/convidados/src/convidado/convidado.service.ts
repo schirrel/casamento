@@ -16,6 +16,14 @@ export class ConvidadoService {
     return Array.from(convidados).map((entry) => entry[1]);
   }
 
+  findOneComplete(id: number) {
+    const convidadoEntity = convidados.get(id);
+    if (!convidadoEntity) {
+      throw new NotFoundException('Convidado não encontrado');
+    }
+    return convidadoEntity;
+  }
+
   findOne(id: number) {
     const convidadoEntity = convidados.get(id);
     if (!convidadoEntity) {
