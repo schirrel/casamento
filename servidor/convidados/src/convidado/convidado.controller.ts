@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { ConvidadoService } from './convidado.service';
 import { CreateConvidadoDto } from './dto/create-convidado.dto';
-import { UpdateConvidadoDto } from './dto/update-convidado.dto';
 import {
   ApiCreatedResponse,
   ApiNotFoundResponse,
@@ -36,7 +35,7 @@ export class ConvidadoController {
     return this.convidadoService.findAll();
   }
 
-  @Get(':id')
+  @Get('/complete/:id')
   @ApiOkResponse({
     description: 'Retorna pessoa convida com o ID informado',
   })
@@ -44,6 +43,16 @@ export class ConvidadoController {
     description: 'Pessoa convidada não encontrada',
   })
   findOne(@Param('id') id: string) {
+    return this.convidadoService.findOneComplete(+id);
+  }
+  @Get(':id')
+  @ApiOkResponse({
+    description: 'Retorna pessoa convida com o ID informado',
+  })
+  @ApiNotFoundResponse({
+    description: 'Pessoa convidada não encontrada',
+  })
+  findOneComplete(@Param('id') id: string) {
     return this.convidadoService.findOne(+id);
   }
 
@@ -54,16 +63,16 @@ export class ConvidadoController {
   @ApiNotFoundResponse({
     description: 'Pessoa convidada não encontrada',
   })
-  update(
-    @Param('id') id: string,
-    @Body() updateConvidadoDto: UpdateConvidadoDto,
-  ) {
-    return this.convidadoService.update(+id, updateConvidadoDto);
-  }
 
+  // update(
+  //   @Param('id') id: string,
+  //   @Body() updateConvidadoDto: UpdateConvidadoDto,
+  // ) {
+  //   return this.convidadoService.update(+id, updateConvidadoDto);
+  // }
   @Delete(':id')
   @ApiOkResponse({
-    description: 'Deleta pessoa convida com o ID informado',
+    description: 'Deleta pessoa convidada com o ID informado',
   })
   @ApiNotFoundResponse({
     description: 'Pessoa convidada não encontrada',

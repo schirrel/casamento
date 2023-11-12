@@ -10,7 +10,7 @@ export class CreateConvidadoDto {
     type: String,
     description: 'Telefone da pessoa convidada',
   })
-  readonly telefone: string;
+  readonly telefone?: string;
   @ApiProperty({
     type: String,
     description: 'Email da pessoa convidada',
@@ -22,5 +22,5 @@ export class CreateConvidadoDto {
     description: 'ID do convidado principal caso convidado seja acompanhante',
     required: false,
   })
-  readonly principal: number;
+  readonly principal?: number;
 }

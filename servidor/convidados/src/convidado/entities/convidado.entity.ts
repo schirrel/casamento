@@ -12,6 +12,7 @@ export class Convidado {
   constructor(dto: CreateConvidadoDto, id: number) {
     this.id = id;
     Object.assign(this, dto);
+    if (!this.principal) this.familiares = [];
   }
 
   update(updateConvidadoDto: UpdateConvidadoDto) {

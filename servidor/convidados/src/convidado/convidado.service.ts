@@ -1,53 +1,64 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateConvidadoDto } from './dto/create-convidado.dto';
-import { UpdateConvidadoDto } from './dto/update-convidado.dto';
-import { convidados } from './convidados.mock';
-import { Convidado } from './entities/convidado.entity';
+import { ConvidadoComplete } from './entities/convidadoComplete.entity';
+import { DatabaseService } from 'src/database/database.service';
+
 @Injectable()
 export class ConvidadoService {
-  create(createConvidadoDto: CreateConvidadoDto) {
-    const id = convidados.size + 1;
-    const convidadoEntity = new Convidado(createConvidadoDto, id);
-    convidados.set(id, convidadoEntity);
-    return id;
+  @Inject(DatabaseService)
+  private readonly databaseService: DatabaseService;
+
+  async create(createConvidadoDto: CreateConvidadoDto) {
+    try {
+      const result = await this.databaseService.create([
+        createConvidadoDto.nome,
+        createConvidadoDto.telefone,
+        createConvidadoDto.email,
+        createConvidadoDto.principal,
+      ]);
+      if (!result.rowCount) {
+        throw new NotFoundException('Convidado não pode ser criado.');
+      }
+      return result.rows[0];
+    } catch (error) {
+      console.error(error);
+      throw new NotFoundException('Convidado não pode ser criado.');
+    }
   }
 
-  findAll() {
-    return Array.from(convidados).map((entry) => entry[1]);
+  async findAll() {
+    try {
+      const result = await this.databaseService.findAll();
+      return result.rows;
+    } catch (e) {
+      return [];
+    }
   }
 
-  findOneComplete(id: number) {
-    const convidadoEntity = convidados.get(id);
-    if (!convidadoEntity) {
+  async findOneComplete(id: number) {
+    try {
+      const result = await this.databaseService.findComplete(id);
+      const complete = new ConvidadoComplete(result.rows).toConvidado();
+      return complete;
+    } catch (e) {
+      console.log(e);
       throw new NotFoundException('Convidado não encontrado');
     }
-    return convidadoEntity;
   }
 
-  findOne(id: number) {
-    const convidadoEntity = convidados.get(id);
-    if (!convidadoEntity) {
+  async findOne(id: number) {
+    try {
+      const result = await this.databaseService.findComplete(id);
+      return result.rows;
+    } catch (e) {
       throw new NotFoundException('Convidado não encontrado');
     }
-    return convidadoEntity;
   }
 
-  update(id: number, updateConvidadoDto: UpdateConvidadoDto) {
-    const convidadoEntity = convidados.get(id);
-    if (!convidadoEntity) {
+  async remove(id: number) {
+    const result = await this.databaseService.delete(id);
+    if (!result.rowCount) {
       throw new NotFoundException('Convidado não encontrado');
     }
-    convidados.set(id, convidadoEntity);
-    convidadoEntity.update(updateConvidadoDto);
-    convidados.set(id, convidadoEntity);
-
-    return convidadoEntity;
-  }
-
-  remove(id: number) {
-    if (!convidados.has(id)) {
-      throw new NotFoundException('Convidado não encontrado');
-    }
-    return convidados.delete(id);
   }
 }
