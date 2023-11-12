@@ -7,12 +7,12 @@ export class Convidado {
   telefone?: string;
   email?: string;
   principal?: number;
-  familiares?: Convidado[];
+  acompanhantes?: Convidado[];
 
   constructor(dto: CreateConvidadoDto, id: number) {
     this.id = id;
     Object.assign(this, dto);
-    if (!this.principal) this.familiares = [];
+    if (!this.principal) this.acompanhantes = [];
   }
 
   update(updateConvidadoDto: UpdateConvidadoDto) {

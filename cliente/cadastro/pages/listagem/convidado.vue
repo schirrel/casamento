@@ -19,7 +19,12 @@
         <td> {{ convidado.nome }}</td>
         <td>{{ convidado.telefone }}</td>
         <td> {{ convidado.email }}</td>
-        <td></td>
+        <td>
+          <div v-if="convidado.acompanhantes && convidado.acompanhantes.length">
+            <span v-for="ac in convidado.acompanhantes" :key="ac.id"> {{ ac.nome }}</span>
+          </div>
+          <button v-else class="btn btn-primary" type="button" @click="carregar(convidado)">carregar</button>
+        </td>
         <td></td>
         <td></td>
         <td></td>
@@ -39,13 +44,18 @@ export default {
     return { convidados }
   },
   methods: {
-    async load(){
+    async load() {
       this.convidados = await this.$axios.$get(`http://localhost:3000/convidado`)
 
     },
     async remover(convidado) {
       await this.$axios.$delete(`http://localhost:3000/convidado/${convidado.id}`)
       this.load()
+    },
+    async carregar(convidado) {
+      const completo = await this.$axios.$get(`http://localhost:3000/convidado/complete/${convidado.id}`)
+      convidado.acompanhantes = completo.acompanhantes;
+      this.$forceUpdate();
     }
   }
 }

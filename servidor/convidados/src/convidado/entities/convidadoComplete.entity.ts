@@ -24,17 +24,19 @@ export class ConvidadoComplete {
     const { id, nome, telefone, email } = this.rows[0];
 
     const principal = new Convidado({ nome, telefone, email }, id);
-    this.rows.forEach((r) => {
-      principal.familiares.push(
-        new Convidado(
-          {
-            nome: r.familiar_nome,
-            principal: r.familiar_principal,
-          },
-          r.familiar_id,
-        ),
-      );
-    });
+    if (this.rows.length > 1) {
+      this.rows.forEach((r) => {
+        principal.acompanhantes.push(
+          new Convidado(
+            {
+              nome: r.familiar_nome,
+              principal: r.familiar_principal,
+            },
+            r.familiar_id,
+          ),
+        );
+      });
+    }
 
     return principal;
   }

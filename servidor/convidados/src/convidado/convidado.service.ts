@@ -56,8 +56,13 @@ export class ConvidadoService {
   }
 
   async remove(id: number) {
-    const result = await this.databaseService.delete(id);
-    if (!result.rowCount) {
+    try {
+      const result = await this.databaseService.delete(id);
+      if (!result.rowCount) {
+        throw new NotFoundException('Convidado não encontrado');
+      }
+    } catch (e) {
+      console.log(e);
       throw new NotFoundException('Convidado não encontrado');
     }
   }

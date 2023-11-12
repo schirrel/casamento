@@ -56,20 +56,6 @@ export class ConvidadoController {
     return this.convidadoService.findOne(+id);
   }
 
-  @Patch(':id')
-  @ApiOkResponse({
-    description: 'Atualiza pessoa convida com o ID informado',
-  })
-  @ApiNotFoundResponse({
-    description: 'Pessoa convidada não encontrada',
-  })
-
-  // update(
-  //   @Param('id') id: string,
-  //   @Body() updateConvidadoDto: UpdateConvidadoDto,
-  // ) {
-  //   return this.convidadoService.update(+id, updateConvidadoDto);
-  // }
   @Delete(':id')
   @ApiOkResponse({
     description: 'Deleta pessoa convidada com o ID informado',
@@ -78,6 +64,7 @@ export class ConvidadoController {
     description: 'Pessoa convidada não encontrada',
   })
   remove(@Param('id') id: string) {
+    console.log(id);
     return this.convidadoService.remove(+id);
   }
 }
